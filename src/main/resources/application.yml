@@ -15,3 +15,5 @@ spring:
 flyway:
   schemas: team
   defaultSchema: team
+paging:
+  size: 5
