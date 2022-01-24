@@ -1,13 +1,18 @@
 package com.team.project.team.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Entity(name = "Team")
+@Table(name = "team")
+@Data
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_team")
     private int id;
+    @Column(name = "name")
     private String name;
     private int projectName;
 }
