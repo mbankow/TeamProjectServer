@@ -13,14 +13,6 @@ create TABLE project (
     description TEXT,
 PRIMARY KEY (id_project));
 
-create TABLE student (
-    id_student INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    surname VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-PRIMARY KEY (id_student));
-
 create TABLE team (
     id_team INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
