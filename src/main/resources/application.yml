@@ -17,3 +17,8 @@ flyway:
   defaultSchema: team
 paging:
   size: 5
+clientApplicationUrl: http://localhost:4200
+jwt:
+  secret: nX9dqkN5LaT7cjdBuaRn7PmqN
+  expiration: 20000000
+secretPassword: Goe7K2Pa6bxgK8ZJ8a
