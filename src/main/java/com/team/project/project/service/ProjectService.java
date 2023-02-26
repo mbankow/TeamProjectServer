@@ -44,12 +44,12 @@ public class ProjectService {
         return projectMapper.toDTO(projectRepository.save(projectMapper.fromDTO(projectDTO)));
     }
 
-    public ProjectDTO findById(Long id){
+    public ProjectDTO findById(Integer id){
         Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("Project by ID" + id + " was not found"));
         return projectMapper.toDTO(project);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Integer id){
         projectRepository.deleteById(id);
     }
 }

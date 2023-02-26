@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/projects")
+@RequestMapping("/project")
 public class ProjectController {
     private final ProjectService projectService;
     @Value("${paging.size}")
@@ -27,7 +27,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDTO> findById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<ProjectDTO> findById(@PathVariable(value = "id") Integer id) {
         ProjectDTO projectDTO = projectService.findById(id);
         return new ResponseEntity<>(projectDTO, HttpStatus.OK);
     }
@@ -45,7 +45,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProjectDTO> deleteById(@PathVariable(value = "id") Long id){
+    public ResponseEntity<ProjectDTO> deleteById(@PathVariable(value = "id") Integer id){
         projectService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

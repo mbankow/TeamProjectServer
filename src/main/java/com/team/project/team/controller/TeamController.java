@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/team")
@@ -20,6 +21,7 @@ public class TeamController {
     @Value("${paging.size}")
     private int pageSize;
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping()
     public ResponseEntity<List<TeamDTO>> findPaginated(@RequestParam(name = "page") int pageNumber) {
         List<TeamDTO> students = teamService.findPaginated(pageNumber,pageSize);
@@ -28,7 +30,7 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeamDTO> findById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<TeamDTO> findById(@PathVariable(value = "id") Integer id) {
         TeamDTO teamDTO = teamService.findById(id);
         return new ResponseEntity<>(teamDTO, HttpStatus.OK);
     }
@@ -39,6 +41,15 @@ public class TeamController {
         return new ResponseEntity<>(teamReturned, HttpStatus.CREATED);
     }
 
+    @PutMapping("/assign")
+    public ResponseEntity<?> assignTeams(@RequestBody Boolean assign){
+        if(assign){
+            teamService.assignTeamsToMentors();
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().body("Użytkownik z takim emailem już istnieje.");
+    }
+
     @PutMapping
     public ResponseEntity<TeamDTO> update(@RequestBody TeamDTO teamDTO){
         TeamDTO teamReturned = teamService.update(teamDTO);
@@ -46,7 +57,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<TeamDTO> deleteById(@PathVariable(value = "id") Long id){
+    public ResponseEntity<TeamDTO> deleteById(@PathVariable(value = "id") Integer id){
         teamService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

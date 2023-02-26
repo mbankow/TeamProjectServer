@@ -1,8 +1,12 @@
 package com.team.project.team.dto;
 
+import com.team.project.team.entity.Team;
+import com.team.project.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -10,5 +14,7 @@ import lombok.Setter;
 public class TeamDTO {
     private int id;
     private String name;
-    private int projectName;
+    private String choices;
+    private List<User> students;
+    private Team mentor;
 }

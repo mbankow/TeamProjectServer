@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserController {
     @Value("${paging.size}")
     private int pageSize;
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping()
     public ResponseEntity<List<UserDTO>> findPaginated(@RequestParam(name = "page") int pageNumber) {
         List<UserDTO> users = userService.findPaginated(pageNumber,pageSize);
@@ -27,9 +29,9 @@ public class UserController {
         return new ResponseEntity<>(users, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
-        UserDTO userDTO = userService.findById(id);
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDTO> findById(@PathVariable(name = "email") String email) {
+        UserDTO userDTO = userService.getUserByEmail(email);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> deleteById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<UserDTO> deleteById(@PathVariable(value = "id") Integer id) {
         userService.deteleById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

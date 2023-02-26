@@ -5,20 +5,26 @@ import com.team.project.team.entity.Team;
 import com.team.project.team.exception.TeamNotFoundException;
 import com.team.project.team.mapper.TeamMapper;
 import com.team.project.team.repository.TeamRepository;
+import com.team.project.user.entity.User;
+import com.team.project.user.service.UserService;
 import com.team.project.util.Headers;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+    private final UserService userService;
 
     public List<TeamDTO> findPaginated(int pageNumber, int pageSize)
     {
@@ -43,12 +49,41 @@ public class TeamService {
         return teamMapper.toDTO(teamRepository.save(teamMapper.fromDTO(teamDTO)));
     }
 
-    public TeamDTO findById(Long id){
+    public TeamDTO findById(Integer id){
         Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team by ID" + id + " was not found"));
         return teamMapper.toDTO(team);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Integer id){
         teamRepository.deleteById(id);
+    }
+
+    public void assignTeamsToMentors(){
+        List<User> mentors = userService.getMentors();
+        List<Team> teams = teamRepository.findAll();
+        boolean assigned;
+        teams.sort(Comparator.comparing(o -> o.getCreateAt()));
+        for(Team team : teams) {
+            assigned = false;
+            String[] chooses = team.getChoices().split(",");
+            for (String chose: chooses ) {
+                log.debug(chose + " wpetli1");
+                for(User mentor: mentors){
+                    log.debug(mentor.getFirm()+ " w petli2");
+                    if(mentor.getAssignedTeams().size() < 6 && mentor.getFirm().equals(chose)){
+                        log.debug(mentor.getFirm()+ " w petli3");
+                        team.setMentor(mentor);
+                        assigned = true;
+                    }
+                    if(assigned)
+                        break;
+                }
+                if(assigned)
+                    break;
+            }
+        }
+        for(Team team :teams){
+            teamRepository.save(team);
+        }
     }
 }
