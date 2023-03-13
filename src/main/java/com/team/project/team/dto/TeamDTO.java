@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -15,6 +16,7 @@ public class TeamDTO {
     private int id;
     private String name;
     private String choices;
+    private Date createAt;
     private List<User> students;
     private Team mentor;
 }
